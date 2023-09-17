@@ -21,6 +21,8 @@ app.get("/", function (req, res) {
 const urls = [];
 
 app.get("/api/shorturl/:id", function (req, res) {
+  console.log("GET", req.params);
+
   const url = urls.find(url => url.short_url === +req.params.id);
   if (!url) {
     return res.status(404).json({ error: "invalid url" });
@@ -33,11 +35,13 @@ app.get("/api/shorturl/:id", function (req, res) {
 app.post("/api/shorturl", function (req, res) {
   const original_url = req.body.url;
 
+  console.log("POST", req.body.url);
+
   try {
     const url = new URL(original_url);
     dns.lookup(url.hostname, err => {
       if (err) {
-        return res.status(400).json({ error: "invalid url" });
+        throw err;
       }
 
       const site = { original_url, short_url: urls.length + 1 };
@@ -50,6 +54,4 @@ app.post("/api/shorturl", function (req, res) {
   }
 });
 
-app.listen(port, function () {
-  console.log(`Listening on port ${port}`);
-});
+app.listen(port, () => console.log(`Listening on port ${port}`));
