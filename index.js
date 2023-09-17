@@ -47,7 +47,7 @@ app.post("/api/shorturl", function (req, res) {
       res.status(201).json(site);
     });
   } catch (error) {
-    return res.status(400).json({ error: "invalid url" });
+    return res.status(400).json({ error: "Invalid Hostname" });
   }
 });
 
