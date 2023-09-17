@@ -38,7 +38,7 @@ app.post("/api/shorturl", function (req, res) {
     const url = new URL(original_url);
     dns.lookup(url.hostname, err => {
       if (err) {
-        return res.status(400).json({ error: "Invalid Hostname" });
+        return res.status(400).json({ error: "invalid url" });
       }
 
       const site = { original_url, short_url: urls.length + 1 };
@@ -47,7 +47,7 @@ app.post("/api/shorturl", function (req, res) {
       res.status(201).json(site);
     });
   } catch (error) {
-    return res.status(400).json({ error: "Invalid Hostname" });
+    res.status(400).json({ error: "invalid url" });
   }
 });
 
