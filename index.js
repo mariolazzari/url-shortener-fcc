@@ -33,17 +33,22 @@ app.get("/api/shorturl/:id", function (req, res) {
 // Your first API endpoint
 app.post("/api/shorturl", function (req, res) {
   const original_url = req.body.url;
-  const url = new URL(original_url);
 
-  dns.lookup(url.hostname, (err, data) => {
+  try {
+    const url = new URL(original_url);
+  } catch (error) {
+    return res.status(400).json({ error: "invalid url" });
+  }
+
+  dns.lookup(url.hostname, err => {
     if (err) {
       return res.status(400).json({ error: "invalid url" });
     }
 
-    const short_url = urls.length + 1;
-    urls.push({ original_url, short_url });
+    const site = { original_url, short_url: urls.length + 1 };
+    urls.push(site);
 
-    res.status(201).json({ original_url, short_url });
+    res.status(201).json(site);
   });
 });
 
