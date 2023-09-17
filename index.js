@@ -37,13 +37,13 @@ app.post("/api/shorturl", function (req, res) {
 
   dns.lookup(url.hostname, (err, data) => {
     if (err) {
-      return res.status(400).json({ error: "Invalid URL" });
+      return res.status(400).json({ error: "invalid url" });
     }
 
     const short_url = urls.length + 1;
     urls.push({ original_url, short_url });
 
-    res.json({ original_url, short_url });
+    res.status(201).json({ original_url, short_url });
   });
 });
 
