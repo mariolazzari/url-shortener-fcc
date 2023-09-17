@@ -20,9 +20,14 @@ app.get("/", function (req, res) {
 
 const urls = [];
 
-app.get("/api/shorturl/:short_url", function (req, res) {
-  const url = urls.find(url => url.short_url === req.params.short_url);
-  res.json({ url });
+app.get("/api/shorturl/:id", function (req, res) {
+  const url = urls.find(url => url.short_url === +req.params.id);
+  if (!url) {
+    return res.status(404).json({ error: "Site not found" });
+  }
+  console.log(url);
+
+  res.redirect(url.original_url);
 });
 
 // Your first API endpoint
