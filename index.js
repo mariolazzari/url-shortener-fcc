@@ -23,9 +23,8 @@ const urls = [];
 app.get("/api/shorturl/:id", function (req, res) {
   const url = urls.find(url => url.short_url === +req.params.id);
   if (!url) {
-    return res.status(404).json({ error: "Site not found" });
+    return res.status(404).json({ error: "invalid url" });
   }
-  console.log(url);
 
   res.redirect(url.original_url);
 });
