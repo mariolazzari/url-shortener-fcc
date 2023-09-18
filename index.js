@@ -20,12 +20,13 @@ app.get("/", function (req, res) {
 
 const urls = [];
 
-app.get("/api/shorturl/:id", function (req, res) {
-  console.log("GET", req.params);
+const sendError = res => res.status(400).json({ error: "invalid url" });
 
-  const url = urls.find(url => url.short_url === +req.params.id);
+app.get("/api/shorturl/:id", function (req, res) {
+  const id = +req.params.id;
+  const url = urls.find(url => url.short_url === id);
   if (!url) {
-    return res.status(404).json({ error: "invalid url" });
+    return sendError(res);
   }
 
   res.redirect(url.original_url);
@@ -35,13 +36,11 @@ app.get("/api/shorturl/:id", function (req, res) {
 app.post("/api/shorturl", function (req, res) {
   const original_url = req.body.url;
 
-  console.log("POST", req.body.url);
-
   try {
     const url = new URL(original_url);
     dns.lookup(url.hostname, err => {
-      if (err) {
-        return res.status(400).json({ error: "invalid url" });
+      if (err || !url.protocol.startsWith("http")) {
+        return sendError(res);
       }
 
       const site = { original_url, short_url: urls.length + 1 };
@@ -49,8 +48,8 @@ app.post("/api/shorturl", function (req, res) {
 
       res.status(201).json(site);
     });
-  } catch (error) {
-    res.status(400).json({ error: "invalid url" });
+  } catch (_ex) {
+    sendError(res);
   }
 });
 
