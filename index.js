@@ -48,7 +48,7 @@ app.post("/api/shorturl", function (req, res) {
       const site = { original_url, short_url: urls.length + 1 };
       urls.push(site);
 
-      res.status(201).json(site, url);
+      res.json(site, url);
     });
   } catch (_ex) {
     sendError(res);
