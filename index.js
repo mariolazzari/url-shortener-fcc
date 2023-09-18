@@ -20,7 +20,7 @@ app.get("/", function (req, res) {
 
 const urls = [];
 
-const sendError = res => res.status(400).json({ error: "Invalid URL" });
+const sendError = res => res.status(400).json({ error: "invalid url" });
 
 app.get("/api/shorturl/:short_url", function (req, res) {
   const id = +req.params.short_url;
@@ -48,7 +48,7 @@ app.post("/api/shorturl", function (req, res) {
       const site = { original_url, short_url: urls.length + 1 };
       urls.push(site);
 
-      res.status(201).json(site);
+      res.status(201).json(site, url);
     });
   } catch (_ex) {
     sendError(res);
