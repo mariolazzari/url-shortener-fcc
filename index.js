@@ -22,8 +22,8 @@ const urls = [];
 
 const sendError = res => res.status(400).json({ error: "Invalid URL" });
 
-app.get("/api/shorturl/:id", function (req, res) {
-  const id = +req.params.id;
+app.get("/api/shorturl/:short_url", function (req, res) {
+  const id = +req.params.short_url;
   const url = urls.find(url => url.short_url === id);
   if (!url) {
     return sendError(res);
