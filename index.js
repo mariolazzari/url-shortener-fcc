@@ -20,13 +20,13 @@ app.get("/", (_req, res) => {
 
 const urls = [];
 
-const sendError = res => res.status(400).json({ error: "invalid url" });
-
 app.get("/api/shorturl/:short_url", function (req, res) {
+  console.log("GET", req.params);
+
   const id = +req.params.short_url;
   const url = urls.find(url => url.short_url === id);
   if (!url) {
-    return sendError(res);
+    return res.status(404).json({ error: "url not found" });
   }
 
   res.redirect(url.original_url);
@@ -43,7 +43,7 @@ app.post("/api/shorturl", function (req, res) {
     dns.lookup(url.hostname, err => {
       if (err || !url.protocol.startsWith("http")) {
         console.log("err", err, url.protocol);
-        return sendError(res);
+        return res.status(400).json({ error: "invalid url" });
       }
 
       const site = { original_url, short_url: urls.length + 1 };
@@ -52,7 +52,7 @@ app.post("/api/shorturl", function (req, res) {
       res.json(site);
     });
   } catch (_ex) {
-    sendError(res);
+    res.status(400).json({ error: "invalid url" });
   }
 });
 
