@@ -36,6 +36,8 @@ app.get("/api/shorturl/:id", function (req, res) {
 app.post("/api/shorturl", function (req, res) {
   const original_url = req.body.url;
 
+  console.log("POST", original_url);
+
   try {
     const url = new URL(original_url);
     dns.lookup(url.hostname, err => {
