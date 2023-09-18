@@ -42,6 +42,7 @@ app.post("/api/shorturl", function (req, res) {
     const url = new URL(original_url);
     dns.lookup(url.hostname, err => {
       if (err || !url.protocol.startsWith("http")) {
+        console.log("err", err, url.protocol);
         return sendError(res);
       }
 
