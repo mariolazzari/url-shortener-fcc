@@ -14,7 +14,7 @@ app.use(express.json());
 
 app.use("/public", express.static(`${process.cwd()}/public`));
 
-app.get("/", function (req, res) {
+app.get("/", (_req, res) => {
   res.sendFile(process.cwd() + "/views/index.html");
 });
 
@@ -48,7 +48,7 @@ app.post("/api/shorturl", function (req, res) {
       const site = { original_url, short_url: urls.length + 1 };
       urls.push(site);
 
-      res.json(site, url);
+      res.json(site);
     });
   } catch (_ex) {
     sendError(res);
